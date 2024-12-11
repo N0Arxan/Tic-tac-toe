@@ -3,12 +3,12 @@ import random
 board = [i for i in range(9)]
 l = 0
 
-
+board = ["0", "1", "2", "3", "4", "5", "6", "7", "8"]
 def print_board():
     global board
     os.system("cls" if os.name == "nt" else "clear")
 
-
+    formatted_board = ""
     for i in range(0, len(board), 3):
         
         row = " | ".join(board[i:i+3])
@@ -16,9 +16,9 @@ def print_board():
         formatted_board += row + "\n"
 
 
-    print(formatted_board.strip())
+    print(formatted_board)
 
-board = ["0", "1", "2", "3", "4", "5", "6", "7", "8"]
+
     
 
 
