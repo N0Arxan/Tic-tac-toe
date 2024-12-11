@@ -2,13 +2,23 @@ import os
 import random
 board = [i for i in range(9)]
 l = 0
-turn = True
+
+
 def print_board():
-    
     global board
-    os.system("cls")
-    print(f"{board[:3]} \n{board[3:6]} \n{board[6:]}")
-    print("enter q any moment for quitting")
+    os.system("cls" if os.name == "nt" else "clear")
+
+
+    for i in range(0, len(board), 3):
+        
+        row = " | ".join(board[i:i+3])
+        
+        formatted_board += row + "\n"
+
+
+    print(formatted_board.strip())
+
+board = ["0", "1", "2", "3", "4", "5", "6", "7", "8"]
     
 
 
@@ -34,13 +44,76 @@ def move_o():
             break
         else:
             move = random.randint(0,8)
-while l <= 9:
+
+def res_check():
+    if board[0] == board[1] == board[2]:
+        if board[0] == "o":
+            return "o"
+        else:
+            return "x"
+    elif board[3] == board[4] == board[5]:
+        if board[3] == "o":
+            return "o"
+        else:
+            return "x"
+    elif board[6] == board[7] == board[8]:
+        if board[6] == "o":
+            return "o"
+        else:
+            return "x"
+    elif board[0] == board[3] == board[6]:
+        if board[0] == "o":
+            return "o"
+        else:
+            return "x"
+    elif board[1] == board[4] == board[7]:
+        if board[1] == "o":
+            return "o"
+        else:
+            return "x"
+    elif board[2] == board[5] == board[8]:
+        if board[2] == "o":
+            return "o"
+        else:
+            return "x"
+    elif board[0] == board[4] == board[8]:
+        if board[0] == "o":
+            return "o"
+        else:
+            return "x"
+    elif board[2] == board[4] == board[6]:
+        if board[2] == "o":
+            return "o"
+        else:
+            return "x"
+    else:
+        return False
+            
+while True:
     print_board()
+    
     move_x()
+    res = res_check()
+    print_board()
+    
+    if res:
+        break
+    elif l==9:
+        break
+    
     move_o()
-    print(l)
-
-
+    res = res_check()
+    print_board()
+    if res:
+        break
+    
+    
+if res == False:
+    print(f"no winner")
+if res == "o":
+    print("OOO WIIIIINNNNN")
+if res == "x":
+    print("XXXXX WIIIIIINNNN")
 
 
 
