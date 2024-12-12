@@ -1,13 +1,16 @@
 import os
 import random
-board = [i for i in range(9)]
-l = 0
+import time
+
+num_moves = 0
 
 board = ["0", "1", "2", "3", "4", "5", "6", "7", "8"]
+m_board = [i for i in range(0,9)]
+
+
 def print_board():
     global board
     os.system("cls" if os.name == "nt" else "clear")
-
     formatted_board = ""
     for i in range(0, len(board), 3):
         
@@ -15,105 +18,78 @@ def print_board():
         
         formatted_board += row + "\n"
 
-
     print(formatted_board)
 
-
-    
-
-
 def move_x():
-    move = int(input("Enter a num Between 1...9 for your move as X : "))
-    global l
+    move = int(input("Enter a index num for your move as X : "))
+    global num_moves
     while True:
         if board[move] != "x" and board[move] != "o":
             board[move] = "x"
-            
-            l += 1
-            break
+            m_board.pop(move)
+            num_moves += 1
+            return board[move] 
         else:
             move = int(input("Invalid Input Enter a num _: "))
 
 def move_o():
-    move = random.randint(0,8)
-    global l
+    move = random.choice(m_board)
+    global num_moves
     while True:
         if board[move] != "x" and board[move] != "o":
             board[move] = "o"
-            l += 1
-            break
+            num_moves += 1
+            return board[move]
         else:
             move = random.randint(0,8)
 
-def res_check():
-    if board[0] == board[1] == board[2]:
-        if board[0] == "o":
-            return "o"
-        else:
-            return "x"
-    elif board[3] == board[4] == board[5]:
-        if board[3] == "o":
-            return "o"
-        else:
-            return "x"
-    elif board[6] == board[7] == board[8]:
-        if board[6] == "o":
-            return "o"
-        else:
-            return "x"
-    elif board[0] == board[3] == board[6]:
-        if board[0] == "o":
-            return "o"
-        else:
-            return "x"
-    elif board[1] == board[4] == board[7]:
-        if board[1] == "o":
-            return "o"
-        else:
-            return "x"
-    elif board[2] == board[5] == board[8]:
-        if board[2] == "o":
-            return "o"
-        else:
-            return "x"
-    elif board[0] == board[4] == board[8]:
-        if board[0] == "o":
-            return "o"
-        else:
-            return "x"
-    elif board[2] == board[4] == board[6]:
-        if board[2] == "o":
-            return "o"
-        else:
-            return "x"
-    else:
-        return False
+def res_check(move_x):
+    global num_moves
+    win_comb = [(0,1,2),(3,4,5),(6,7,8), #Horizental
+                (0,3,6),(1,4,7),(2,5,8), #Vertical
+                (2,4,6),(0,4,8)]         #Diagonal
+    for comb in win_comb:
+        if board[comb[0]] == board[comb[1]] == board[comb[2]]:
+            if board[comb[0]] == move_x:
+                return "You(X) Won"
+            else:
+                return "Machine(O) Won"
+    
+    if num_moves < 9:
+        return False  
+    
+    return "Its a Tie"
+      
             
-while True:
+def Run():
+    
     print_board()
     
-    move_x()
-    res = res_check()
-    print_board()
-    
-    if res:
-        break
-    elif l==9:
-        break
-    
-    move_o()
-    res = res_check()
-    print_board()
-    if res:
-        break
-    
-    
-if res == False:
-    print(f"no winner")
-if res == "o":
-    print("OOO WIIIIINNNNN")
-if res == "x":
-    print("XXXXX WIIIIIINNNN")
+    while True : 
+        
+        mx = move_x()
+        result = res_check(mx)
+        print_board()
+        if result:
+            return result
+        
+        os.system("cls" if os.name == "nt" else "clear")
+        print("Thinking ...")
+        time.sleep(1)
+
+        move_o()
+        print_board()
+        result = res_check(mx)
+        if result:
+            return result
+
+def main():
+    final = Run()
+    print(final)
+
+
+if __name__ == "__main__":
+    main()
 
 
 
